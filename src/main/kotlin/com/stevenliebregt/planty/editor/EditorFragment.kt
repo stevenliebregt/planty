@@ -7,6 +7,7 @@ import org.fxmisc.richtext.LineNumberFactory
 import org.reactfx.Subscription
 import tornadofx.*
 import java.io.File
+import java.io.FileWriter
 import java.time.Duration
 
 class EditorFragment : Fragment() {
@@ -26,9 +27,28 @@ class EditorFragment : Fragment() {
                 .subscribe { fire(RenderEvent(codeArea.text)) }
 
         // Load the provided file
+        file?.let { loadFile(it) }
+    }
+
+    fun save() {
         file?.let {
-            titleProperty.set(it.name)
-            codeArea.replaceText(it.readLines().joinToString(System.lineSeparator()))
+            val fileWriter = FileWriter(it)
+            fileWriter.write(codeArea.text)
+            fileWriter.close()
+
+            // TODO: Update checksum
+
+            return
         }
+
+        println("Save new")
+        // TODO: Save
+        // TODO: Update checksum
+    }
+
+    private fun loadFile(file: File) {
+        titleProperty.set(file.name)
+        codeArea.replaceText(file.readLines().joinToString(System.lineSeparator()))
+        // TODO: Set checksum
     }
 }

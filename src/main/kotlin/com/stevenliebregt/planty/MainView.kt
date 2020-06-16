@@ -37,7 +37,7 @@ class MainView : View() {
                         add(fragment)
 
                         setOnCloseRequest { fragment.subscription.unsubscribe() }
-                    }
+                    }.select()
                 }
 
                 // Listen for events to add a tab for existing documents
@@ -50,7 +50,7 @@ class MainView : View() {
                         add(fragment)
 
                         setOnCloseRequest { fragment.subscription.unsubscribe() }
-                    }
+                    }.select()
                 }
             }
 
@@ -77,5 +77,16 @@ class MainView : View() {
 
             fire(RenderEvent(editorFragments[index].codeArea.text))
         }
+
+        // Connect shortcuts
+        shortcut("Ctrl+S") { save() }
+    }
+
+    private fun save() {
+        val index = tabPane.selectionModel.selectedIndex
+
+        if (index < 0) return
+
+        editorFragments[index].save()
     }
 }
