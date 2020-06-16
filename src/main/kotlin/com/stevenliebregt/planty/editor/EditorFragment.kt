@@ -15,7 +15,8 @@ class EditorFragment : Fragment() {
     val codeArea = CodeArea()
 
     val initialFile: File? by param()
-    private var file: File? = null
+    var file: File? = null
+        private set
 
     val subscription: Subscription
 
@@ -27,10 +28,10 @@ class EditorFragment : Fragment() {
         codeArea.paragraphGraphicFactory = LineNumberFactory.get(codeArea)
         subscription = codeArea.multiPlainChanges()
                 .successionEnds(Duration.ofMillis(500))
-                .subscribe { fire(RenderEvent(codeArea.text)) }
+                .subscribe { fire(RenderEvent(codeArea.text, file)) }
 
         // Load the provided file
-        file?.let { loadFile(it) }
+        initialFile?.let { loadFile(it) }
     }
 
     fun save() {

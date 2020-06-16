@@ -9,7 +9,9 @@ class PreviewView : View() {
     private val renderer = Renderer()
     private lateinit var imageView: ImageView
 
-    override val root = stackpane {
+    // TODO: Zoomable
+
+    override val root = scrollpane {
         imageView = imageview { }
     }
 
@@ -18,7 +20,7 @@ class PreviewView : View() {
             if (event.content == null) {
                 imageView.image = Image(Renderer::class.java.classLoader.getResourceAsStream("default-preview.png"))
             } else {
-                imageView.image = renderer.render(event.content)
+                imageView.image = renderer.render(event.content, event.file?.parentFile)
             }
         }
     }

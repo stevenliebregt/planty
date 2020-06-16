@@ -81,7 +81,9 @@ class MainView : View() {
                 return@addListener
             }
 
-            fire(RenderEvent(editorFragments[index].codeArea.text))
+            val fragment = editorFragments[index]
+
+            fire(RenderEvent(fragment.codeArea.text, fragment.file))
         }
 
         // Connect shortcuts
@@ -93,8 +95,9 @@ class MainView : View() {
 
         if (index < 0) return
 
-        editorFragments[index].save()
-        fire(RenderEvent(editorFragments[index].codeArea.text))
+        val fragment = editorFragments[index]
+        fragment.save()
+        fire(RenderEvent(fragment.codeArea.text, fragment.file))
     }
 
     private fun export(format: FileFormat) {
@@ -102,6 +105,8 @@ class MainView : View() {
 
         if (index < 0) return
 
-        controller.export(format, editorFragments[index].codeArea.text)
+        val fragment = editorFragments[index]
+
+        controller.export(format, fragment.codeArea.text, fragment.file?.parentFile)
     }
 }
