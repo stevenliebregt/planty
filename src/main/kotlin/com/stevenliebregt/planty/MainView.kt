@@ -7,6 +7,7 @@ import com.stevenliebregt.planty.event.RenderEvent
 import com.stevenliebregt.planty.preview.PreviewView
 import javafx.scene.control.TabPane
 import javafx.scene.layout.Priority
+import net.sourceforge.plantuml.FileFormat
 import tornadofx.*
 
 class MainView : View() {
@@ -23,6 +24,11 @@ class MainView : View() {
                 item(messages["New"]).action { fire(NewDocumentEvent()) }
                 item(messages["Open"]).action { controller.openFileDialog() }
                 item(messages["Exit"]).action { controller.quit() }
+            }
+            menu(messages["Export"]) {
+                FileFormat.values().forEach {
+                    item(messages["As ${it.name}"]).action { export(it) }
+                }
             }
         }
         splitpane {
@@ -42,7 +48,7 @@ class MainView : View() {
 
                 // Listen for events to add a tab for existing documents
                 subscribe<EditDocumentEvent> { event ->
-                    val fragment = find<EditorFragment>(mapOf(EditorFragment::file to event.file))
+                    val fragment = find<EditorFragment>(mapOf(EditorFragment::initialFile to event.file))
                     editorFragments += fragment
 
                     tab("") {
@@ -88,5 +94,14 @@ class MainView : View() {
         if (index < 0) return
 
         editorFragments[index].save()
+        fire(RenderEvent(editorFragments[index].codeArea.text))
+    }
+
+    private fun export(format: FileFormat) {
+        val index = tabPane.selectionModel.selectedIndex
+
+        if (index < 0) return
+
+        controller.export(format, editorFragments[index].codeArea.text)
     }
 }

@@ -1,6 +1,7 @@
 package com.stevenliebregt.planty.editor
 
 import com.stevenliebregt.planty.event.RenderEvent
+import javafx.stage.FileChooser
 import org.fxmisc.flowless.VirtualizedScrollPane
 import org.fxmisc.richtext.CodeArea
 import org.fxmisc.richtext.LineNumberFactory
@@ -13,7 +14,9 @@ import java.time.Duration
 class EditorFragment : Fragment() {
     val codeArea = CodeArea()
 
-    val file: File? by param()
+    val initialFile: File? by param()
+    private var file: File? = null
+
     val subscription: Subscription
 
     override val root = VirtualizedScrollPane(codeArea)
@@ -32,23 +35,36 @@ class EditorFragment : Fragment() {
 
     fun save() {
         file?.let {
-            val fileWriter = FileWriter(it)
-            fileWriter.write(codeArea.text)
-            fileWriter.close()
-
-            // TODO: Update checksum
-
+            writeFile(it, codeArea.text)
             return
         }
 
-        println("Save new")
-        // TODO: Save
-        // TODO: Update checksum
+        val fileChooser = FileChooser()
+        fileChooser.initialFileName = "untitled.puml"
+        val result = fileChooser.showSaveDialog(null)
+
+        result?.let {
+            file = it
+            writeFile(it, codeArea.text)
+        }
     }
 
     private fun loadFile(file: File) {
         titleProperty.set(file.name)
         codeArea.replaceText(file.readLines().joinToString(System.lineSeparator()))
+
+        this.file = file
+
         // TODO: Set checksum
+    }
+
+    private fun writeFile(file: File, contents: String) {
+        val fileWriter = FileWriter(file)
+        fileWriter.write(contents)
+        fileWriter.close()
+
+        titleProperty.set(file.name)
+
+        // TODO: Update checksum
     }
 }
