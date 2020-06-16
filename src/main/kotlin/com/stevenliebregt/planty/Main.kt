@@ -1,6 +1,7 @@
 package com.stevenliebregt.planty
 
-import tornadofx.*
+import tornadofx.App
+import tornadofx.launch
 
 class Main : App(MainView::class)
 

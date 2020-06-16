@@ -1,7 +1,7 @@
 package com.stevenliebregt.planty.editor
 
 import javafx.scene.text.Font
-import tornadofx.*
+import tornadofx.Stylesheet
 
 class EditorStyles : Stylesheet() {
     init {

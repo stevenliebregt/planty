@@ -2,12 +2,13 @@ package com.stevenliebregt.planty.editor
 
 import com.stevenliebregt.planty.event.RenderEvent
 import javafx.stage.FileChooser
-import org.apache.commons.codec.digest.DigestUtils
 import org.fxmisc.flowless.VirtualizedScrollPane
 import org.fxmisc.richtext.CodeArea
 import org.fxmisc.richtext.LineNumberFactory
 import org.reactfx.Subscription
-import tornadofx.*
+import tornadofx.Fragment
+import tornadofx.addStylesheet
+import tornadofx.get
 import java.io.File
 import java.io.FileWriter
 import java.time.Duration

@@ -4,7 +4,7 @@ import com.stevenliebregt.planty.event.EditDocumentEvent
 import javafx.application.Platform
 import javafx.stage.FileChooser
 import net.sourceforge.plantuml.FileFormat
-import tornadofx.*
+import tornadofx.Controller
 import java.io.File
 import kotlin.system.exitProcess
 

@@ -1,5 +1,5 @@
 package com.stevenliebregt.planty.event
 
-import tornadofx.*
+import tornadofx.FXEvent
 
 class NewDocumentEvent() : FXEvent()

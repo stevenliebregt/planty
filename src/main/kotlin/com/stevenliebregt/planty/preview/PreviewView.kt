@@ -3,7 +3,9 @@ package com.stevenliebregt.planty.preview
 import com.stevenliebregt.planty.event.RenderEvent
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import tornadofx.*
+import tornadofx.View
+import tornadofx.imageview
+import tornadofx.scrollpane
 
 class PreviewView : View() {
     private val renderer = Renderer()
