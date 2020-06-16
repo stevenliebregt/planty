@@ -2,6 +2,7 @@ package com.stevenliebregt.planty.editor
 
 import com.stevenliebregt.planty.event.RenderEvent
 import javafx.stage.FileChooser
+import org.apache.commons.codec.digest.DigestUtils
 import org.fxmisc.flowless.VirtualizedScrollPane
 import org.fxmisc.richtext.CodeArea
 import org.fxmisc.richtext.LineNumberFactory
@@ -26,6 +27,7 @@ class EditorFragment : Fragment() {
         titleProperty.set(messages["NewDocument"])
 
         codeArea.paragraphGraphicFactory = LineNumberFactory.get(codeArea)
+        codeArea.addStylesheet(EditorStyles::class)
         subscription = codeArea.multiPlainChanges()
                 .successionEnds(Duration.ofMillis(500))
                 .subscribe { fire(RenderEvent(codeArea.text, file)) }
@@ -55,8 +57,6 @@ class EditorFragment : Fragment() {
         codeArea.replaceText(file.readLines().joinToString(System.lineSeparator()))
 
         this.file = file
-
-        // TODO: Set checksum
     }
 
     private fun writeFile(file: File, contents: String) {
@@ -65,7 +65,5 @@ class EditorFragment : Fragment() {
         fileWriter.close()
 
         titleProperty.set(file.name)
-
-        // TODO: Update checksum
     }
 }
